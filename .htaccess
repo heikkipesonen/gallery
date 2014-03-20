@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteBase /mrfoto/app/backend
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  RewriteRule ^([a-z0-9-]+)/?$ index.php?view=$1 [QSA]
+  RewriteRule ^([a-z0-9-]+)/([a-z0-9-]+)/?$ index.php?view=$1&slug=$2 [QSA]
+  RewriteRule ^([a-z0-9-]+)/([a-z0-9-]+)/([a-z0-9-]+)/?$ index.php?view=$1&slug=$2&gallery=$3 [QSA]
+  RewriteRule ^([a-z0-9-]+)/([a-z0-9-]+)/([a-z0-9-]+)/([a-z0-9-]+)/?$ index.php?view=$1&slug=$2&gallery=$3&key=$4 [QSA]
+  RewriteRule ^([a-z0-9-]+)/([a-z0-9-]+)/([a-z0-9-]+)/([a-z0-9-]+)/([a-z0-9-]+)/?$ index.php?view=$1&slug=$2&gallery=$3&key=$4&photo=$5 [QSA]
+</IfModule>
