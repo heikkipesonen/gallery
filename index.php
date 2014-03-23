@@ -1,35 +1,69 @@
 <?php
+/*
+
+
+
+
+shitty(tm) php image gallery management
+
+heikki pesonen
+2014
+
+
+
+
+*/
+require_once('environment.php');
+error_reporting(E_ALL);
+ini_set('display_errors', 'On'); 
+
 session_start();
 function __autoload($class){
 	$dir = 'class';
-
-	if (file_exists($dir.'/'.$class.'.php')){
-		require_once($dir.'/'.$class.'.php');
-	}
+	require_once(__DIR__.'/'.$dir.'/'.$class.'.php');
 }
 require_once('conf.php');
 
-define('IMAGE_MAXSIZE', Util::get_max_fileupload_size());
+//define('IMAGE_MAXSIZE', Util::get_max_fileupload_size());
 
-$allowedViews = ['photos','gallery'];
+$allowedViews = array('photos','gallery');
+$data = array('view'=>'login');
 
-
-if (isset($_REQUEST['view']) && isset($_REQUEST['slug']) && isset($_REQUEST['gallery']) && isset($_REQUEST['key'])){
-	if (!in_array($_REQUEST['view'], $allowedViews)){
-		$view = 'gallery';		
+foreach ($_REQUEST as $key=> $value){
+	if (!is_array($value)){
+		$data[$key] = Util::clearXss( $value );
 	} else {
-		$view = $_REQUEST['view'];
+		$data[$key] = array();
+		foreach ($value as $k => $v){
+			$data[$key][$k] = Util::clearXss($v);
+		}
 	}
-} else if (isset($_REQUEST['view']) && file_exists('view/'.$_REQUEST['view'].'.php') && Photo::isLogin()){	
-	$view = $_REQUEST['view'];
-} else if (Photo::isLogin()) {
-	if (!Photo::isAdmin()){
-		$view = 'gallerylist';		
+}
+
+if (isset($data['view'])){
+	$controller = 'controller/'.$data['view'].'Controller.php';	
+
+	if (file_exists($controller)){
+		require_once($controller);
+	}
+
+	if (isset($data['slug']) && isset($data['gallery']) && isset($data['key'])){
+		if (!in_array($data['view'], $allowedViews)){
+				$view = 'gallery';		
+		} else {
+			$view = $data['view'];
+		}
+	} else if (file_exists('view/'.$data['view'].'.php') && Photo::isLogin()){	
+		$view = $data['view'];
+	}  else if (Photo::isLogin()) {
+		if (!Photo::isAdmin()){
+			$view = 'gallerylist';		
+		} else {
+			$view = 'main';
+		}
 	} else {
-		$view = 'main';
+		$view = 'login';
 	}
-} else {
-	$view = 'login';
 }
 
 ?>
@@ -42,22 +76,23 @@ if (isset($_REQUEST['view']) && isset($_REQUEST['slug']) && isset($_REQUEST['gal
 
 <div id="wrapper">
 	<div class="page">
-		
+	<ul class="nav">
 <?php
 if (Photo::isAdmin()){
-?>	
-	<ul class="nav">
+?>
 		<a href="/<?php echo BASE_URL;?>/"><li><i class="fa fa-th-large"></i></li></a>
-		<a href="/<?php echo BASE_URL;?>/client"><li><i class="fa fa-user"></i></li></a>
 		<a href="/<?php echo BASE_URL;?>/list"><li><i class="fa fa-list"></i></li></a>
 		<a href="/<?php echo BASE_URL;?>/orders"><li><i class="fa fa-inbox"></i></li></a>
-
-		<a href="/<?php echo BASE_URL;?>/logout"><li><i class="fa fa-sign-out"></i></li></a>
-	</ul>
 <?php
 }
+
+if (Photo::isLogin()){
+
 ?>
-		<div class="view col-md-12 <?php if (!Photo::isAdmin()) echo 'full-width'; ?>" id="<?php echo $view; ?>">
+		<a href="/<?php echo BASE_URL;?>/logout"><li><i class="fa fa-sign-out"></i></li></a>
+<?php } ?>
+	</ul>
+		<div class="view col-md-12" id="<?php echo $view; ?>">
 			<?php
 			include('view/'.$view.'.php');
 			?>

@@ -1,5 +1,6 @@
 <?php
 class Photo{
+
 	public static function getSlug(){
 		$slug = Util::generateRandomToken(6);
 		
@@ -112,11 +113,12 @@ class Photo{
 		}
 		return false;
 	}
-
+/*
 	public static function isAuthorized($id){
 		if (self::isAdmin()) return true;
 		if (self::isGalleryOwner($id)) return true;
 		return false;
 	}
+*/
 }
 ?>

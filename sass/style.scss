@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,900,700,300);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,200,900,700,300);
 
 a{
 	font-weight:bold;
@@ -18,9 +18,10 @@ input,textarea,select{
 body{
 	font-size:14pt;
 	font-family: 'Roboto', sans-serif;
+	font-weight:100;
 }
 
-a,p,span,input,textarea{
+a,p,span,input,textarea, label{
 	font-weight:400;
 	font-family: 'Roboto', sans-serif;
 }
@@ -28,11 +29,15 @@ a,p,span,input,textarea{
 h1,h2,h3,h4,h5{
 	font-weight:bold;
 	font-family: 'Roboto', sans-serif;
-	font-weight:700;
+	font-weight:400;
 }
 
 h1,h2{	
 
+}
+
+.alert p{
+	font-size:11pt;
 }
 
 .input-group{
@@ -53,6 +58,7 @@ h1,h2{
 	position:relative;
 	min-height: 100%;
 	width:100%;
+	min-width: 800px;
 	background-color:white;
 	
 	.nav{
@@ -183,14 +189,18 @@ textarea{
 	margin:auto;
 	position:relative;
 	padding:0px;
+	text-align:center;
 
 	.image-container{
 		position: relative;
 		
-		float:left;
+		float:none;
+		display: inline-block;
 		padding: 0px;
 		margin: 0px;
+		margin-left: -5px;
 		overflow: hidden;
+		
 		vertical-align: top;
 		
 		img{
@@ -247,4 +257,108 @@ textarea{
 
 h2{
 	vertical-align:baseline;
+}
+
+.view{
+	position:absolute;
+	min-height:100%;
+	width:auto;
+	right:0px;
+	left:0px;
+}
+
+.preview-gallery-header{
+	position:absolute;
+	background-color:white;
+	background-color:rgba(255,255,255,0.7);
+	padding:15px;
+	z-index:10;
+	top:20px;
+	left:7px;
+
+	h4{
+		padding: 0px;
+		margin: 0px;
+	}
+}
+
+.ordered{
+	padding:0px;
+	tr{		
+		th, td{
+			vertical-align: middle !important;
+			padding: 0px !important;
+		}
+	}
+
+	img{
+		width: 64px;		
+	}
+}
+.img-container{
+	background-color:#000;
+	position:absolute;
+	width: 100%;
+	height: auto;
+	top:0px;
+	bottom: 111px;
+	
+
+
+	.image-big{
+		position: absolute;
+		margin: auto;
+		text-align: center;
+		
+		height: 100%;
+		width: 100%;
+
+	
+		img{			
+			display: inline-block;
+			
+			height: 100%;
+		}
+	}
+}
+
+.img-gallery-scroller{
+	position: absolute;
+	bottom:0px;
+	margin:0;
+	padding:0;
+	width: 100%;
+	overflow-x: scroll;
+	background-color:#000;
+
+	.image-preview{
+		position: relative;
+		width: 96px;
+		float:left;
+		margin:0;
+		padding:0;
+
+		img{
+			width: 100%;
+		}
+
+		&.selected{
+			img{
+				opacity:0.5;
+			}
+			
+			background-color:white;
+
+			&:after{
+				content:"";
+				position: absolute;
+				top:0px;
+				left:50%;
+				margin-left: -12px;
+				border-top: 12px solid white;
+				border-left: 12px solid transparent;
+				border-right: 12px solid transparent;
+			}
+		}
+	}
 }

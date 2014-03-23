@@ -76,7 +76,6 @@ class Util{
                 || ($file["type"] == "image/pjpeg")
                 || ($file["type"] == "image/x-png")
                 || ($file["type"] == "image/png"))
-            && ($file["size"] < IMAGE_MAXSIZE)
             && in_array($extension, $allowedExts)){
 
 
